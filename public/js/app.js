@@ -1,36 +1,49 @@
-import "./bootstrap";
+$(document).ready(function () {
+    // Function to toggle the mobile menu
+    function toggleMenu() {
+        var $menu = $("#menu");
+        var $hamburger = $("#hamburger");
+        var $content = $("#content");
 
-function toggleMenu() {
-    var menu = document.getElementById("menu");
-
-    var hamburger = document.getElementById("hamburger");
-
-    var content = document.getElementById("content");
-
-    if (menu.classList.contains("show-menu")) {
-        menu.classList.remove("show-menu");
-        hamburger.style.transform = "translateX(0)";
-        content.style.width = "100%";
-        content.style.marginLeft = "0px";
-    } else {
-        menu.classList.add("show-menu");
-        hamburger.style.transform = "translateX(300px)";
-        content.style.width = "calc(100% - 300px)";
-        content.style.marginLeft = "300px";
+        if ($menu.hasClass("show-menu")) {
+            $menu.removeClass("show-menu");
+            $hamburger.css("transform", "translateX(0)");
+            $content.css({
+                width: "100%",
+                marginLeft: "0px",
+            });
+        } else {
+            $menu.addClass("show-menu");
+            $hamburger.css("transform", "translateX(300px)");
+            $content.css({
+                width: "calc(100% - 300px)",
+                marginLeft: "300px",
+            });
+        }
     }
-}
-var navbar = document.getElementById("menu");
-var navbar2 = document.getElementById("navbar");
-var prevScrollpos = window.pageYOffset;
-var scrollThreshold = 105;
 
-window.onscroll = function () {
-    var currentScrollPos = window.pageYOffset;
-    if (currentScrollPos > scrollThreshold) {
-        navbar.style.top = "0";
-        navbar2.style.top = "0";
-    } else {
-        navbar.style.top = scrollThreshold - currentScrollPos + "px";
-        navbar2.style.top = scrollThreshold - currentScrollPos + "px";
+    // Add a click event listener to the hamburger button
+    $("#hamburger").on("click", toggleMenu);
+
+    // Function to handle the scroll effect for the navbar
+    function handleScroll() {
+        var $navbar = $("#navbar");
+        var $menu = $("#menu");
+        var scrollThreshold = 105;
+        var currentScrollPos = $(window).scrollTop();
+
+        if (currentScrollPos > scrollThreshold) {
+            $navbar.css("top", "0");
+            $menu.css("top", "0");
+        } else {
+            $navbar.css("top", scrollThreshold - currentScrollPos + "px");
+            $menu.css("top", scrollThreshold - currentScrollPos + "px");
+        }
     }
-};
+
+    // Add a scroll event listener to handle the navbar scroll effect
+    $(window).on("scroll", handleScroll);
+
+    // Ensure the scroll effect is applied when the page initially loads
+    handleScroll();
+});

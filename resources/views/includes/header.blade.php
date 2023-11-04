@@ -28,6 +28,5 @@
       <li><a href="{{ route('sushiexperience') }}"><img src="{{ asset('images/explogo.png') }}" class="img-fluid w-100"></a></li>
     </ul>
 </div>
-
 <section id="content" class="container-fluid" style="margin-top: 60px; margin-bottom: 60px; min-height: 800px;">
     
