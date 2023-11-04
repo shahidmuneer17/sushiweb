@@ -1,0 +1,10 @@
+[03-Nov-2023 02:06:24 America/New_York] PHP Warning:  require(/home/healpavr/dtechsol.pk/sushiweblaravel/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/healpavr/dtechsol.pk/sushiweblaravel/index.php on line 24
+[03-Nov-2023 02:06:24 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/healpavr/dtechsol.pk/sushiweblaravel/../vendor/autoload.php' (include_path='.:/opt/alt/php80/usr/share/pear:/opt/alt/php80/usr/share/php:/usr/share/pear:/usr/share/php') in /home/healpavr/dtechsol.pk/sushiweblaravel/index.php:24
+Stack trace:
+#0 {main}
+  thrown in /home/healpavr/dtechsol.pk/sushiweblaravel/index.php on line 24
+[03-Nov-2023 02:13:00 America/New_York] PHP Warning:  require(/home/healpavr/dtechsol.pk/sushiweblaravel/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/healpavr/dtechsol.pk/sushiweblaravel/index.php on line 24
+[03-Nov-2023 02:13:00 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/healpavr/dtechsol.pk/sushiweblaravel/../vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/healpavr/dtechsol.pk/sushiweblaravel/index.php:24
+Stack trace:
+#0 {main}
+  thrown in /home/healpavr/dtechsol.pk/sushiweblaravel/index.php on line 24
