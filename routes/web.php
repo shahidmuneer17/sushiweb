@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MenuController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,8 @@ Route::get('/', function () {
 Route::get('/account', function () {
     return view('account');
 })->name('account');
+
+
 
 route::get('/cart', function () {
     return view('cart');
@@ -57,4 +61,19 @@ route::get('/personal-data', function () {
 route::get('/legal-mentions', function () {
     return view('legal-mentions');
 })->name('legal-mentions');
+
+// Route to display all categories
+Route::get('/menu', [MenuController::class, 'allCategories'])->name('menu.allCategories');
+
+
+// Route to display subcategories of a category
+Route::get('/menu/{category}', 'MenuController@subcategories')->name('menu.subcategories');
+
+// Route to display products of a subcategory
+Route::get('/menu/{category}/{subcategory}', 'MenuController@products')->name('menu.products');
+
+// Route to display details of a product
+Route::get('/menu/{category}/{subcategory}/{product}', 'MenuController@productDetails')->name('menu.productDetails');
+
+
 
