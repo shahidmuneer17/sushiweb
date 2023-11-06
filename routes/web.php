@@ -65,15 +65,11 @@ route::get('/legal-mentions', function () {
 // Route to display all categories
 Route::get('/menu', [MenuController::class, 'allCategories'])->name('menu.allCategories');
 
+Route::get('/menu/{category}', [MenuController::class, 'subcategories'])->name('menu.subcategories');
 
-// Route to display subcategories of a category
-Route::get('/menu/{category}', 'MenuController@subcategories')->name('menu.subcategories');
+Route::get('/menu/{category}/{subcategory}', [MenuController::class, 'products'])->name('menu.products');
+
+Route::get('/menu/{category}/{subcategory}/{product}', [MenuController::class, 'productDetails'])->name('menu.productDetails');
 
 // Route to display products of a subcategory
-Route::get('/menu/{category}/{subcategory}', 'MenuController@products')->name('menu.products');
-
-// Route to display details of a product
-Route::get('/menu/{category}/{subcategory}/{product}', 'MenuController@productDetails')->name('menu.productDetails');
-
-
 

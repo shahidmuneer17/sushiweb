@@ -1,6 +1,6 @@
-@extends('app')
+@extends('menu.sidemenu')
 
-@section('content')
+@section('menubody')
 <div class="container">
     <h1>Product Details</h1>
     <h2>{{ $product->prod_name }}</h2>
