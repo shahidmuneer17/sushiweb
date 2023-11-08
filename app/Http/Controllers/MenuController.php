@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Product;
+use App\Models\ProductOption;
 
 class MenuController extends Controller
 {
@@ -39,6 +40,7 @@ public function allCategories()
     public function productDetails(Category $category, Subcategory $subcategory, Product $product)
     {
         $categories = $this->categories;
+        
         return view('menu.productDetails', compact('categories', 'product', 'category', 'subcategory'));
     }
 }

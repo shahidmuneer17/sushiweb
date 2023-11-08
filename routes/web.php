@@ -21,49 +21,55 @@ Route::get('/', function () {
 
 
 Route::get('/account', function () {
-    return view('account');
+    return view('my-account');
 })->name('account');
 
+Route::get('/cart', 'App\Http\Controllers\CartController@showCart')->name('cart');
 
+Route::get('/add-to-cart', 'App\Http\Controllers\CartController@addtoCart');
 
-route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+Route::post('/store-in-session', 'App\Http\Controllers\SessionController@storeInSession');
 
-route::get('/loyalty', function () {
-    return view('loyalty');
-})->name('loyalty');
+Route::get('/zones', 'App\Http\Controllers\ZoneController@fetchZones');
 
-route::get('/recruitment', function () {
-    return view('recruitment');
-})->name('recruitment');
+Route::get('/check-delivery-zone', 'App\Http\Controllers\checkDeliveryZone@checkDeliveryZone');
 
-route::get('/sushiexperience', function () {
-    return view('sushiexperience');
-})->name('sushiexperience');    
+//pages
 
-route::get('/restaurants', function () {
-    return view('restaurants');
-})->name('restaurants');
+route::get('/cgv', function () {
+    return view('pages.cgv');
+})->name('cgv');
 
 route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-route::get('/cgv', function () {
-    return view('cgv');
-})->name('cgv');
+route::get('/donnees-personnelles', function () {
+    return view('pages.donness');
+})->name('donnees-personnelles');
 
-route::get('/personal-data', function () {
-    return view('personal-data');
-})->name('personal-data');
+route::get('/loyaute', function () {
+    return view('pages.loyaute');
+})->name('loyaute');
 
-route::get('/legal-mentions', function () {
-    return view('legal-mentions');
-})->name('legal-mentions');
+route::get('/mentions-legales', function () {
+    return view('pages.mentions');
+})->name('mentions-legales');
 
-// Route to display all categories
-Route::get('/menu', [MenuController::class, 'allCategories'])->name('menu.allCategories');
+route::get('/nos-restaurants', function () {
+    return view('nosrestaurents');
+})->name('nos-restaurants');
+
+route::get('/recrutment', function () {
+    return view('recrutment');
+})->name('recrutment');
+
+route::get('/sushi-experience', function () {
+    return view('sushiexp');
+})->name('sushi-experience');
+
+// menu routes
+Route::get('/menu', [MenuController::class, 'allCategories'])->name('menu');
 
 Route::get('/menu/{category}', [MenuController::class, 'subcategories'])->name('menu.subcategories');
 
@@ -71,5 +77,4 @@ Route::get('/menu/{category}/{subcategory}', [MenuController::class, 'products']
 
 Route::get('/menu/{category}/{subcategory}/{product}', [MenuController::class, 'productDetails'])->name('menu.productDetails');
 
-// Route to display products of a subcategory
-
+Auth::routes();

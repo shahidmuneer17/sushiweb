@@ -9,8 +9,8 @@
         <div class="col-md-4 p-5">
             <h5>INFORMATION</h5>
             <a href="{{ route('cgv') }}" role="button" class="sushibtn2">CGV</a><br>
-            <a href="{{ route('personal-data') }}" role="button" class="sushibtn2">données personnelles</a><br>
-            <a href="{{ route('legal-mentions') }}" role="button" class="sushibtn2">mentions légales</a>
+            <a href="{{ route('donnees-personnelles') }}" role="button" class="sushibtn2">données personnelles</a><br>
+            <a href="{{ route('mentions-legales') }}" role="button" class="sushibtn2">mentions légales</a>
         </div>
         <div class="col-md-4 p-5">
             <h5>SUIVEZ L'ACTU CENTRAL SUSHI SUR LES RESEAUX SOCIAUX</h5>
@@ -134,6 +134,175 @@
           --bs-accordion-active-bg: transparent;
       }
           </style>
+
+<script>
+  var input = document.getElementById('map-address-input');
+  var options = {
+    componentRestrictions: {
+      country: 'fr'
+    }
+  };
+
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+  function checkAddress() {
+    var address = document.getElementById("map-address-input").value;
+    geocodeAddress(address, function(coordinates) {
+      var point = new google.maps.LatLng(coordinates.lat, coordinates.lng);
+      checkIfPointInAnyZone(point, function(zone) {
+        var resultElement = document.getElementById("result");
+        var resultText = document.getElementById("resultText");
+        if (zone) {
+          var restParam = zone.name;
+
+          // Specific rules for some zone names
+          if (zone.name === 'belfort') {
+            restParam = 'Belfort';
+          } else if (zone.name === 'dijon') {
+            restParam = 'Dijon';
+          } else if (zone.name === 'besancon') {
+            restParam = 'Besancon';
+          }
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'save_session.php', true);
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhr.send('address=' + encodeURIComponent(address) + '&lat=' + coordinates.lat + '&lng=' + coordinates.lng);
+
+          // Redirect to menu.php with the zone name or adjusted name as a parameter
+          window.location.href = "menu.php?rest=" + encodeURIComponent(restParam) + "&method=delivery";
+        } else {
+          resultText.innerHTML = "Sorry, this address is not within our delivery zones.";
+        }
+        resultElement.style.display = "flex";
+      });
+    });
+  }
+
+  function closeResult() {
+    var resultElement = document.getElementById("result");
+    resultElement.style.display = "none";
+  }
+
+  function geocodeAddress(address, callback) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      'address': address
+    }, function(results, status) {
+      if (status === 'OK') {
+        callback({
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        });
+      } else {
+        alert('Select Correct Address');
+      }
+    });
+  }
+
+  function checkIfPointInAnyZone(point, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'fetch_zones.php', true);
+    xhr.onload = function() {
+      var zones = JSON.parse(xhr.responseText);
+      for (var i = 0; i < zones.length; i++) {
+        var zone = zones[i];
+        var polygon = new google.maps.Polygon({
+          paths: zone.coordinates
+        });
+        if (google.maps.geometry.poly.containsLocation(point, polygon)) {
+          callback(zone);
+          return;
+        }
+      }
+      callback(null);
+    };
+    xhr.send();
+  }
+</script>
+
+
+<script>
+  // script of check delivery zones button entrer
+  // Assuming you're using jQuery
+  $(document).ready(function() {
+    // Replace '#button-id' with the actual ID of your button
+    $('#checkDZ').click(function() {
+      // Get lat and lng from the input field
+      // Replace '#map-address-input' with the actual ID of your input field
+      var latLng = $('#map-address-input').val().split(',');
+      var lat = latLng[0];
+      var lng = latLng[1];
+
+      // Make an AJAX request to the server
+      $.ajax({
+        url: '/check-delivery-zone', // Replace with your actual checkDeliveryZone route
+        method: 'POST',
+        data: {
+          lat: lat,
+          lng: lng
+        },
+        success: function(response) {
+          if (response.error) {
+            alert(response.error);
+          } else {
+            // Update the UI with the restaurant information
+            // This will depend on your specific UI requirements
+            $('#restaurant-name').text(response.name);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('An error occurred. Please try again.');
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  // const selectBoxValues = document.querySelectorAll('.select-box__value');
+
+  // selectBoxValues.forEach(value => {
+  //   value.addEventListener('click', () => {
+  //     const input = value.querySelector('.select-box__input');
+  //     const url = getInputURL(input);
+  //     if (url) {
+  //       window.location.href = url;
+  //     }
+  //   });
+  // });
+
+  // function getInputURL(input) {
+  //   // Define URLs for each input value
+  //   const urls = {
+  //     '0': 'menu.php?rest=Dijon&method=takeaway',
+  //     '1': 'menu.php?rest=Besançon&method=takeaway',
+  //     '4': 'menu.php?rest=Belfort&method=takeaway'
+  //   };
+  //   return urls[input.id];
+  // }
+  document.querySelectorAll('.select-box__option').forEach(function(selectBox) {
+    selectBox.addEventListener('click', function() {
+      fetch('/store-in-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+            method: 'takeaway',
+            restaurent: this.textContent
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            window.location.href = '/menu';
+          }
+        });
+    });
+  });
+</script>
       </body>
       
       </html>
